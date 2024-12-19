@@ -9,9 +9,11 @@ import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
 import handleDuplicateError from '../errors/handleDuplicateError';
 import AppError from '../errors/AppError';
+import config from '../config';
+
 
 const globalErrorhandler: ErrorRequestHandler = (err, req, res, next) => {
-  //setting default values
+ 
   let statusCode = 500;
   let message = 'Something went wrong!';
 
@@ -61,13 +63,13 @@ const globalErrorhandler: ErrorRequestHandler = (err, req, res, next) => {
     ];
   }
 
-  // ultimate return
+ 
   res.status(statusCode).json({
     success: false,
     message,
     errSources: errorSources,
     err,
-    // stack: config.NODE_ENV === 'development' ? err?.stack : null,
+    stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
 };
 
