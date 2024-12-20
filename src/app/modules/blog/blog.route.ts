@@ -4,12 +4,12 @@ import auth from '../../middlewares/auth';
 
 const blogRouter = express.Router();
 
-blogRouter.post('/blogs', auth('user'), BlogControllers.createBlog);
+blogRouter.post('/', auth('user'), BlogControllers.createBlog);
 
-blogRouter.patch('/blogs/:id', auth('user'), BlogControllers.updateBlog);
+blogRouter.patch('/:id', auth('user'), BlogControllers.updateBlog);
 
-blogRouter.delete('/blogs/:id', auth('user'), BlogControllers.deleteBlog);
+blogRouter.delete('/:id', auth('user'), BlogControllers.deleteBlog);
 
-blogRouter.get('/blogs', BlogControllers.getAllBlogs);
+blogRouter.get('/', BlogControllers.getAllBlogs);
 
 export const BlogRoutes = blogRouter;

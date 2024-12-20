@@ -25,26 +25,12 @@ class QueryBuilder<T> {
     return this;
   }
 
-  filter() {
-    const queryObj = { ...this.query }; // copy
-
-    // Filtering
-    const excludeFields = ['search', 'sort', 'sortOrder'];
-
-    excludeFields.forEach((el) => delete queryObj[el]);
-
-    this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
-
-    return this;
-  }
-
   sort() {
     let sortStr;
 
     if (this?.query?.sortBy && this?.query?.sortOrder) {
-      const sortBy = this?.query?.sortBy;
+      const sortBy = this?.query?.sortBy || '-createdAt';
       const sortOrder = this?.query?.sortOrder;
-
       sortStr = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
     }
 
@@ -52,6 +38,17 @@ class QueryBuilder<T> {
 
     return this;
   }
-}
 
+  filter() {
+    const queryObj = { ...this.query };
+
+    const excludeFields = ['search', 'sortOrder', 'sortBy'];
+
+    excludeFields.forEach((key) => delete queryObj[key]);
+
+    this.modelQuery = this.modelQuery.find(queryObj);
+
+    return this;
+  }
+}
 export default QueryBuilder;

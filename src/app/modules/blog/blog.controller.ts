@@ -9,7 +9,6 @@ const createBlog = catchAsync(async (req, res) => {
   const result = await blogServices.createBlog(body);
 
   const author = await User.findById(result.author);
- 
 
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
@@ -45,7 +44,7 @@ const getAllBlogs = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'All blogs fetched successfully',
+    message: 'Blogs fetched successfully',
     data: result,
   });
 });

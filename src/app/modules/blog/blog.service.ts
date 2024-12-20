@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import QueryBuilder from '../../builder/queryBuilder';
 import { blogSearchableFields } from './blog.constant';
 import { TBlog } from './blog.interface';
@@ -11,7 +9,7 @@ import AppError from '../../errors/AppError';
 import { StatusCodes } from 'http-status-codes';
 
 const createBlog = async (payload: TBlog) => {
-  const result = (await Blog.create(payload));
+  const result = await Blog.create(payload);
   return result;
 };
 
@@ -20,7 +18,6 @@ const updateBlog = async (id: string, payload: TBlog, token: string) => {
 
   const authorId = data?.author;
   const authorEmail = (await User.findById(authorId))?.email;
-  
 
   if (!token) {
     throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not authorized');
@@ -42,10 +39,10 @@ const updateBlog = async (id: string, payload: TBlog, token: string) => {
 };
 
 const getAllBlogs = async (query: Record<string, unknown>) => {
-  const blogQuery = new QueryBuilder(Blog.find(), query)
+  const blogQuery = new QueryBuilder(Blog.find().populate('author'), query)
     .search(blogSearchableFields)
+    .sort()
     .filter()
-    .sort();
 
   const result = await blogQuery.modelQuery;
   return result;

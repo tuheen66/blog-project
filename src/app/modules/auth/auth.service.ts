@@ -29,7 +29,7 @@ const login = async (payload: TLoginUser) => {
   );
 
   if (!isPasswordMatch) {
-    throw new AppError(StatusCodes.UNAUTHORIZED, 'Invalid password');
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
   }
 
   const jwtPayload = {
