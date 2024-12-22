@@ -2,24 +2,18 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { blogServices } from './blog.service';
-import { User } from '../user/user.model';
+// import { User } from '../user/user.model';
 
 const createBlog = catchAsync(async (req, res) => {
   const body = req.body;
-  const result = await blogServices.createBlog(body);
-
-  const author = await User.findById(result.author);
+  const token = req.headers.authorization as string;
+  const result = await blogServices.createBlog( body, token);
 
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
     success: true,
     message: 'Blog created successfully',
-    data: {
-      _id: result._id,
-      title: result.title,
-      content: result.content,
-      author,
-    },
+    data: result,
   });
 });
 

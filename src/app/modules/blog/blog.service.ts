@@ -8,8 +8,19 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import AppError from '../../errors/AppError';
 import { StatusCodes } from 'http-status-codes';
 
-const createBlog = async (payload: TBlog) => {
-  const result = await Blog.create(payload);
+const createBlog = async (payload: TBlog, token: string) => {
+  const decoded = jwt.verify(
+    token,
+    config.jwt_access_secret as string,
+  ) as JwtPayload;
+
+  const { email } = decoded;
+
+  const author = await User.findOne({ email });
+
+  const blogData = { ...payload, author };
+
+  const result = await Blog.create(blogData);
   return result;
 };
 
@@ -17,6 +28,7 @@ const updateBlog = async (id: string, payload: TBlog, token: string) => {
   const data = await Blog.findById(id);
 
   const authorId = data?.author;
+
   const authorEmail = (await User.findById(authorId))?.email;
 
   if (!token) {
@@ -42,7 +54,7 @@ const getAllBlogs = async (query: Record<string, unknown>) => {
   const blogQuery = new QueryBuilder(Blog.find().populate('author'), query)
     .search(blogSearchableFields)
     .sort()
-    .filter()
+    .filter();
 
   const result = await blogQuery.modelQuery;
   return result;
