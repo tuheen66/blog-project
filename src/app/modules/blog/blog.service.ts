@@ -8,7 +8,8 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import AppError from '../../errors/AppError';
 import { StatusCodes } from 'http-status-codes';
 
-const createBlog = async (payload: TBlog, token: string) => {
+const createBlog = async (payload: TBlog, bearerToken: string) => {
+  const token = bearerToken.split(' ')[1] as string;
   const decoded = jwt.verify(
     token,
     config.jwt_access_secret as string,
@@ -24,7 +25,9 @@ const createBlog = async (payload: TBlog, token: string) => {
   return result;
 };
 
-const updateBlog = async (id: string, payload: TBlog, token: string) => {
+const updateBlog = async (id: string, payload: TBlog, bearerToken: string) => {
+  const token = bearerToken.split(' ')[1] as string;
+  
   const data = await Blog.findById(id);
 
   const authorId = data?.author;
@@ -60,7 +63,9 @@ const getAllBlogs = async (query: Record<string, unknown>) => {
   return result;
 };
 
-const deleteBlog = async (id: string, token: string) => {
+const deleteBlog = async (id: string, bearerToken: string) => {
+  const token = bearerToken.split(' ')[1] as string;
+  
   const data = await Blog.findById(id);
 
   const authorId = data?.author;

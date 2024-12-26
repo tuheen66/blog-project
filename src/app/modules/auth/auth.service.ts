@@ -43,7 +43,10 @@ const login = async (payload: TLoginUser) => {
     config.jwt_access_expires_in as string,
   );
 
+
+// const token = bearerToken.split(' ')[1];
  
+// console.log(token );
 
   return { token };
 

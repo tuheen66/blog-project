@@ -7,7 +7,8 @@ import { adminServices } from './admin.service';
 
 const deleteBlog = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await adminServices.deleteBlog(id);
+  const token = req.headers.authorization as string;
+  const result = await adminServices.deleteBlog(id, token);
 
   sendResponse(res, {
     success: true,
@@ -18,7 +19,8 @@ const deleteBlog = catchAsync(async (req, res) => {
 
 const blockUser = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await adminServices.blockUser(id);
+  const token = req.headers.authorization as string;
+  const result = await adminServices.blockUser(id, token);
 
   sendResponse(res, {
     success: true,

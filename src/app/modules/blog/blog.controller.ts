@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -7,8 +9,9 @@ import { blogServices } from './blog.service';
 const createBlog = catchAsync(async (req, res) => {
   const body = req.body;
   const token = req.headers.authorization as string;
-  const result = await blogServices.createBlog( body, token);
+  const result = await blogServices.createBlog(body, token);
 
+  
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
     success: true,
@@ -52,7 +55,6 @@ const deleteBlog = catchAsync(async (req, res) => {
     statusCode: StatusCodes.OK,
     success: true,
     message: 'Blog deleted successfully',
-    data: result,
   });
 });
 
