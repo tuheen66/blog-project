@@ -8,6 +8,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import AppError from '../../errors/AppError';
 import { StatusCodes } from 'http-status-codes';
 
+
 const createBlog = async (payload: TBlog, bearerToken: string) => {
   const token = bearerToken.split(' ')[1] as string;
   const decoded = jwt.verify(
